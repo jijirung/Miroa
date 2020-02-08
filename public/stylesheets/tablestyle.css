@@ -1,0 +1,20 @@
+@media( max-width: 640px ) {
+    table,
+    table thead,
+    table tbody,
+    table tr,
+    table th,
+    table td {
+        display: block;
+        /* table와 하위 요소들의 display 속성을 변경합니다. */
+    }
+ 
+ 
+    table th,
+    table td {
+        border-top: none;
+        border-bottom: none;
+    }
+    
+    
+}

@@ -1,0 +1,110 @@
+/* header.ejs */
+#logo{
+    float: left;
+}
+#userInfo{
+    float: right;
+    margin-top: 12px;
+    font-weight: 700;
+    font-size: 20px;
+}
+#sign{
+    margin-left: 20px;
+}
+#bottomHeader{
+    clear: both;
+    font-weight: 800;
+    margin-bottom: 80px;
+}
+#navlogo{
+    display: none;
+}
+#topHeader{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    overflow: auto;
+}
+a.nav-link {
+    font-size: 22px;
+}
+#navUserInfo {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.container {
+    margin-top: 10px;
+    background-color: #ffffff;
+}
+/*small devices (landscape phones, 576px and up)*/
+@media (max-width:576px){
+    #topHeader{
+        display: none;
+    }
+    #navlogo{
+        display: inline;
+    } 
+    #navbarSupportedContent {
+        margin-bottom: 30px;
+    }
+}
+/*medium devices (tablets, 768px and up)*/
+@media (max-width: 768px){
+    #topHeader{
+        display: none;
+    }
+    #navlogo{
+        display: inline;
+    }  
+    #navbarSupportedContent {
+        margin-bottom: 30px;
+    }
+     
+}
+/*Large devices (desktops, 992px and up)*/
+@media (max-width: 992px){
+    #topHeader{
+        display: none;
+    }
+    #navlogo{
+        display: inline;
+    }
+    #navbarSupportedContent {
+        margin-bottom: 30px;
+    }
+    li.nav-item {
+        margin: 0px 40px;
+    }
+    
+        
+}
+/*Extra large devices (large desktops, 1400px and up)*/
+@media (min-width: 992px) and (max-width: 1400px){
+    a.nav-link {
+        font-size: 25px;
+    }
+    li.nav-item {
+        margin: 0px 42px;
+    }
+    #navUserInfo {
+        display: none;
+    } 
+    #navbarSupportedContent {
+        margin-bottom: 10px;
+    }
+    a.nav-link {
+        font-size: 17px;
+    }
+}
+/*Extra large devices (large desktops, 1400px and up)*/
+@media (min-width: 1400px){
+    li.nav-item {
+        margin: 0px 65px;
+    }
+    #navUserInfo {
+        display: none;
+    } 
+    #navbarSupportedContent {
+        margin-bottom: 10px;
+    }
+}
+

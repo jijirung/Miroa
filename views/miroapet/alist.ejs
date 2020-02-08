@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>미로아펫</title>
+    <!--부트스트랩 css-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/aliststyle.css">
+    <!--모바일 최적화-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    </script>
+</head>
+
+<body>
+
+    <div class="header">
+        <% include ../header.ejs %>
+    </div>
+    <div class="banner">
+        <% include ./banner.ejs %>
+    </div>
+    <div class="container">
+        <div class="cnt">
+            <h4 class="font-weight-bold">보호소 분양 리스트</h4><br>
+        </div>
+        <div class="divlist">
+            <section class="alist">
+                <%for(var i=0;i<item.length;i++){%>
+                <%if(item[i].happenDt!=null){%>
+                <div class="row list" style="border:2px solid rgb(253, 138, 105)">
+                    <a href="/miroapet/list/read?param=<%=JSON.stringify(item[i])%>" class="text-dark page-link">
+                        <div class="img-hover">
+                            <img src="<%-item[i].popfile%>" alt="Another Image zoom-on-hover effect">
+                        </div>
+                        <div>
+                        <div class="span4">
+                                <div class="box2">
+                                    <div class="max">
+                                        공고일 : <%-item[i].noticeSdt%>~<%-item[i].noticeEdt%><br>
+                                        발견 날짜 : <%-item[i].happenDt%><br>
+                                    </div>
+                                    지역 : <%-item[i].orgNm%><br>
+                                    동물종류 : <%-item[i].kindCd%><br>
+                                    특징 : <%-item[i].specialMark%><br>
+                                    발견 위치 : <%-item[i].happenPlace%><br>
+                                    상태 : <%-item[i].processState%><br>
+                                </div>
+                        </div>
+                        </div>
+                    </a>
+                </div>
+                <%}%>
+            <%}%>
+            </section>
+        </div>
+        <div class="cnt">
+            <li class="d-flex justify-content-center">페이지 <%-pn%> / <%-tc%></li>
+        </div>
+        <!-- 현재 페이지와 전체 페이지 수를 이용한 페이징 처리 -->
+        <div class="d-flex justify-content-center">
+            <ul class="pagination">
+                <%if(pn<=10){%>
+                <li class="page-item">
+                    <a class="page-link">처음</a>
+                </li>
+                <%}%>
+                <%if(pn>10){%>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/miroapet/list?pageNo=<%=Math.floor(parseInt(pn-1)/10)*10+1-10%>">[이전]</a>
+                </li>
+                <%}%>
+                <%for(var i=Math.floor(parseInt(pn-1)/10)*10+1;i<=Math.floor(parseInt(pn-1)/10)*10+10;i++){%>
+                <%if(i==pn){%>
+                <li class="page-item active">
+                    <a class="page-link">
+                        <bold><%=i%></bold>
+                    </a> </li><%}else if(i<=tc){%>
+                <li class="page-item">
+                    <a class="page-link" href="/miroapet/list?pageNo=<%=i%>"><%=i%></a></li>
+                <%}%>
+                    <%}%>
+                <%if(pn!=tc&&tc>10){%>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/miroapet/list?pageNo=<%=Math.floor(parseInt(pn-1)/10)*10+1+10%>">[다음]</a>
+                </li>
+                <%}%>
+                    <%if(pn==tc||tc<=10){%>
+                <li class="page-item">
+                    <a class="page-link">끝</a>
+                </li>
+                <%}%>
+        </ul>
+        </div>
+    </div>
+    <div class="footer">
+            <% include ../footer.ejs %>
+        </div>
+        <!--부트스트랩 js-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

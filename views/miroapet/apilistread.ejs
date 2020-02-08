@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>미로아펫</title>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel='stylesheet' href='/stylesheets/tablestyle.css' />
+	<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<!-- api리스트상세정보 -->
+	<div class="header">
+		<% include ../header.ejs %>
+	</div>
+	<div class="container">	
+	<h4 class="font-weight-bold text-center" >분양 정보</h4><br><br>
+	<%if(item){%>
+		<div class="text-center">
+		<img src="<%=item.popfile%>" width="400" >
+		</div>
+		<div class="table-responsive">
+		<table class="table">
+			<tr>
+				<th>상태</td>
+				<th colspan="3">구조장소</td>
+				<th colspan="2">접수일</td>
+			</tr>
+			<tr>
+				<td><%=item.processState%></td>
+				<td colspan="3"><%=item.happenPlace%></td>
+				<td colspan="2"><%=item.happenDt%></td>
+			</tr>
+			<tr>
+				<th>품종</th>
+				<th>색</th>
+				<th>나이</th>
+				<th>체중</th>
+				<th>성별</th>
+				<th>중성화 여부</th>
+			</tr>
+			<tr>
+				<td><%=item.kindCd%></td>
+				<td><%=item.colorCd%></td>
+				<td><%=item.age%></td>
+				<td><%=item.weight%></td>
+				<td><%if(item.sexCd=='M'){%>수컷<%}else if(item.sexCd=='F'){%>암컷<%}else{%>미상<%}%></td>
+				<td><%if(item.neuteryn=='Y'){%>예<%}else if(item.neuteryn=='N'){%>아니오<%}else{%>미상<%}%></td>
+			</tr>
+			<tr>
+				<th colspan="6">특징</th>
+			</tr>
+			<tr>
+				<td colspan="6"><%=item.specialMark%></td>
+			</tr>
+			<tr>
+				<th colspan="6">공고일</th>
+			</tr>
+			<tr>
+				<td colspan="6"><%-item.noticeSdt%>~<%-item.noticeEdt%></td>
+			</tr>
+			<tr>
+				<th colspan="2">보호소 이름</th>
+				<th>보호소 연락처</th>
+				<th colspan="3">보호장소</th>
+			</tr>
+			<tr>
+				<td colspan="2"><%=item.careNm%></td>
+				<td><%=item.careTel%></td>
+				<td colspan="3"><%=item.careAddr%></td>
+			</tr>
+			<tr>
+				<th colspan="2">담당자</th>
+				<th colspan="4">담당자 연락처</th>
+			</tr>
+			<tr>
+					<td colspan="2"><%=item.chargeNm%></td>
+					<td colspan="4"><%=item.officetel%></td>
+			</tr>
+		</table>
+		</div>
+		<div class="text-center">
+		<%if(item.processState=='보호중'){%>
+			<button class="btn btn-success" onclick="window.open('/miroapet/list/apply?param=<%=JSON.stringify(item)%>','window_name','width=430,height=500,location=no,status=no,scrollbars=yes');">분양신청</button>
+		<%}else if(item.processState=='종료(입양)'){%>
+			<h4>분양이 완료되었습니다.</h4>
+		<%}else if(item.processState=='종료(반환)'||item.processState=='종료(자연사)'){%>
+			<h4>보호가 종료되었습니다.</h4>
+		<%}else{%>
+			<h4>정보를 받아오는 것에 실패하였습니다.</h4>
+		<%}%>
+		</div>
+
+	<%}%>
+	<hr>
+	<% if (pn !== null) { %>
+		<div class="form-group row">
+				<div class="col-sm-12 text-right">
+					<input class="btn btn-primary" type="button" value="목록으로" onclick="location.href='/miroapet/list?pageNo=<%=pn%>'">
+				</div>
+		</div>
+	<%}%>
+	<hr>
+	</div>
+
+	<div class="footer">
+			<% include ../footer.ejs %>
+	</div>
+	<!--부트스트랩 js-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

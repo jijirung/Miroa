@@ -1,0 +1,272 @@
+<!--Code by 정지형-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>미로아펫</title>
+    <!--나눔 폰트 사용-->
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+    <!--부트스트랩 css-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!--community css-->
+    <link href="/stylesheets/community.css" rel="stylesheet">
+    <style>
+      .hide {
+				display: none;
+			}
+    </style>
+    <script type="text/javascript">
+      /*커뮤니티 수정기능*/
+      function updateCommunity(communityId, ctype){//인자 값: (해당 커뮤니티 게시글 오브젝트 아이디, 커뮤니티 카테고리 타입)
+        var form = document.createElement("form");
+        form.setAttribute("charset", "UTF-8");
+        form.setAttribute("method", "Get");  //get 방식
+        form.setAttribute("action", "/community/update"); //요청 보낼 주소
+        //hidden인 communityId 생성 및 값 저장
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "communityId");
+        hiddenField.setAttribute("value", communityId);
+        form.appendChild(hiddenField);
+        //hidden인 ctype 생성 및 값 저장
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "ctype");
+        hiddenField.setAttribute("value", ctype);
+        form.appendChild(hiddenField);
+        //form 생성 및 전송
+        document.body.appendChild(form);
+        form.submit();
+      }
+      /*커뮤니티 삭제기능*/
+      function deleteCommunity(communityId, ctype){//인자 값: (해당 커뮤니티 게시글 오브젝트 아이디, 커뮤니티 카테고리 타입)
+        var form = document.createElement("form");
+        form.setAttribute("charset", "UTF-8");
+        form.setAttribute("method", "Post");  //post 방식
+        form.setAttribute("action", "/community/delete"); //요청 보낼 주소
+        //hidden인 communityId 생성 및 값 저장
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "communityId");
+        hiddenField.setAttribute("value", communityId);
+        form.appendChild(hiddenField);
+        //hidden인 ctype 생성 및 값 저장
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "ctype");
+        hiddenField.setAttribute("value", ctype);
+        form.appendChild(hiddenField);
+        //form 생성 및 전송
+        document.body.appendChild(form);
+        form.submit();
+      }
+      /*커뮤니티 댓글수정버튼을 누르면 div로 출력되던 댓글내용값을 textarea로 출력되게 하고 onclick=updateComment()인 수정버튼을 생성시키는 기능 */
+      function changeContent(commentId){//인자 값 :(해당 댓글 오브젝트 아이디)
+        $('.' + commentId + ' .hide').removeClass('hide');//클래스가 .해당 댓글 오브젝트 아이디.hide라면 hide이름 제거 
+        $('#content' + commentId).addClass('hide');//아이디가 #content 해당 댓글 오브젝트 아이디라면 클래스이름에 hide 추가
+        $('#btn' + commentId).addClass('hide');//아이디가 #btn 해당 댓글 오브젝트 아이디라면 클래스이름에 hide 추가
+      }
+      /*커뮤니티 댓글 수정기능*/
+      function updateComment(communityId, commentId){//인자 값: (해당 커뮤니티 게시글 오브젝트 아이디, 수정버튼을 누른 댓글의 오브젝트 아이디)
+        var form = document.createElement("form");
+        form.setAttribute("charset", "UTF-8");
+        form.setAttribute("method", "Post");  //Post 방식
+        form.setAttribute("action", "/community/comment/update"); //요청 보낼 주소
+        //hidden인 communityId 생성 및 값 저장
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "communityId");
+        hiddenField.setAttribute("value", communityId);
+        form.appendChild(hiddenField);
+        //hidden인 commentId 생성 및 값 저장
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "commentId");
+        hiddenField.setAttribute("value", commentId);
+        form.appendChild(hiddenField);
+        //hidden인 content를 생성하고 그 값을 textarea에 작성한 댓글 내용으로 저장함.
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "content");
+        hiddenField.setAttribute("value", $('#textArea' + commentId).val());
+        form.appendChild(hiddenField);
+        //form 생성 및 전송
+        document.body.appendChild(form);
+        form.submit();
+      }
+      /*커뮤니티 댓글 삭제기능*/
+      function deleteComment(communityId, commentId){//인자 값: (해당 커뮤니티 게시글 오브젝트 아이디, 삭제버튼을 누른 댓글의 오브젝트 아이디)
+        var form = document.createElement("form");
+        form.setAttribute("charset", "UTF-8");
+        form.setAttribute("method", "Post");  //Post 방식
+        form.setAttribute("action", "/community/comment/delete"); //요청 보낼 주소
+        //hidden인 communityId 생성 및 값 저장
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "communityId");
+        hiddenField.setAttribute("value", communityId);
+        form.appendChild(hiddenField);
+        //hidden인 commentId 생성 및 값 저장
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "commentId");
+        hiddenField.setAttribute("value", commentId);
+        form.appendChild(hiddenField);
+        //form 생성 및 전송
+        document.body.appendChild(form);
+        form.submit();
+      }
+    </script>
+  </head>
+  <body>
+  <!--header 네비게이션 메뉴-->
+  <div class="header">
+    <% include ../header.ejs %>
+  </div>
+    
+  <% 
+      var curType = posts.type;<!--동물종류-->
+      var curTitle = posts.title;<!--제목-->
+      var curImage = posts.image;<!--이미지-->
+      var curContent =posts.contents;<!--내용-->
+      var curWriter = posts.writer['name'];<!--작성자 이름-->
+      var curDate = posts.created_at;<!--등록일-->
+  %>
+ <!--main 높이 최소 800px-->   
+  <div class="container" role="main" style="min-height:800px;">
+    <!--ctype 1 찾은 후기 카테고리 -->
+    <% if(ctype==1){%>
+      <h4 class="font-weight-bold text-center">찾은 후기</h4><br><br>
+    <!--ctype 2 분양 후기 카테고리 -->
+    <%}else if(ctype==2){%>
+      <h4 class="font-weight-bold text-center">분양 후기</h4><br><br>
+    <!--ctype 3 소통 / 잡담 카테고리 -->
+    <%}else{%>
+      <h4 class="font-weight-bold text-center">소통 / 잡담</h4><br><br>
+    <%}%>
+    <div class="form-group row">
+      <div class="col-sm-12 text-right">
+        <!--등록일 monent모듈을 사용해 'YYYY-MM-DD'로 날짜 형식 변환-->            
+        <%=moment(curDate).format('YYYY-MM-DD hh:mm:ss')%>     
+      </div>
+    </div>           
+    <div class="form-group row">         
+      <label class="col-sm-2 col-form-label font-weight-bold" >제목</label>
+      <div class="col-sm-10">      
+        <%=curTitle%><!--제목-->
+      </div>     
+    </div>
+    <div class="form-group row"> 
+      <label class="col-sm-2 col-form-label font-weight-bold" >작성자</label>
+      <div class="col-sm-10">      
+        <%=curWriter%><!--작성자-->
+      </div>  
+    </div>
+    <% if(ctype!= 3){%>
+      <div class="form-group row"> 
+        <label class="col-sm-2 col-form-label font-weight-bold" >동물종류</label>
+        <div class="col-sm-10">      
+            <%=curType%><!--동물종류-->
+        </div>  
+      </div>
+    <%}%>
+    <!--사진이 있다면 사진 출력-->
+    <%if(curImage){%>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label font-weight-bold" >사진</label>
+        <div class="col-sm-10">    
+          <img alt="이미지" width="400px" src="<%=curImage%>"/>     
+        </div>    
+      </div>
+    <%}%>                               
+    <div class="form-group row">        
+      <label class="col-sm-2 col-form-label font-weight-bold" >내용</label>
+      <div class="col-sm-10">
+        <!--입력한 그대로 출력해주는 pre태그 사용-->        
+        <pre><%=curContent%></pre><!--내용-->              
+      </div>
+    </div>
+    <hr>
+    <div class="form-group row">
+      <div class="col-sm-12 text-right">
+        <!--로그인한 상태라면-->
+        <% if(session){ %>
+          <!--로그인한 유저와 해당 게시글의 글쓴이가 같다면 수정과 삭제버튼 생성-->
+          <% if(session.user.name == curWriter){ %>
+            <button class="btn btn-info" id="btnUpdate" onclick="updateCommunity('<%=posts._id%>','<%=ctype%>')">수정</button>
+            <button class="btn btn-danger" id="btndelete" onclick="deleteCommunity('<%=posts._id%>','<%=ctype%>')">삭제</button> 
+          <%}
+        }%>     
+      </div>     
+    </div>
+    <hr>
+    <div class="form-group row">        
+        <label class="col-sm-2 col-form-label font-weight-bold" >댓글</label>  
+    </div>
+    <!--comment값이 없다면-->
+    <%if (posts.comments.length == 0){%> 댓글이 없습니다. <%}%>
+    <!--comment값이 있다면 for문을 이용해 출력-->
+    <%for(var i = 0; i < posts.comments.length; i++){%>
+      <div class="comment <%=posts.comments[i]._id%>">
+        <div>
+          <span class="font-weight-bold"><%=posts.comments[i].writer['name']%></span>&nbsp;&nbsp;<!--댓글 작성자의 이름-->
+          <span id="date"><%=moment(posts.comments[i].created_at).format('YYYY-MM-DD hh:mm:ss')%></span><!--댓글의 등록일 monent모듈을 사용해 'YYYY-MM-DD'로 날짜 형식 변환-->
+        </div>
+        <div class="form-group row">  
+          <div class="col-sm-9" id="content<%=posts.comments[i]._id%>"><!--댓글의 수정삭제 기능을 위해 id값을 comment 오브젝트객체id값을 주어 구분함.-->
+            <div><pre><%=posts.comments[i].contents%></pre></div><!--댓글의 내용-->
+          </div>
+          <div class="col-sm-10 hide"><!--댓글의 수정버튼을 눌렀을 경우 hide의 속성이 제거됨.-->
+            <textarea class="form-control" id="textArea<%=posts.comments[i]._id%>"  style="resize: none;"><%=posts.comments[i].contents%></textarea>
+          </div>
+          <!--로그인한 상태라면-->   
+          <% if (session){
+            <!--로그인한 유저와 해당 댓글의 글쓴이가 같다면 수정과 삭제버튼 생성-->
+            if(session.user.objId == posts.comments[i].writer['_id']){ %>
+              <div class="col-sm-3 text-right" id="btn<%=posts.comments[i]._id%>">
+                <button type="submit" class="btn btn-sm btn btn-info" id="btnUpdate" onclick="changeContent('<%=posts.comments[i]._id%>')">수정</button>
+                <!--div로 출력되던 댓글내용이 textarea로 바뀌고 onclick="updateComment인 수정버튼이 생김-->
+                <button type="submit" class="btn btn-sm btn-danger" id="btnDelete" onclick="deleteComment('<%=posts._id%>','<%=posts.comments[i]._id%>')">삭제</button>
+                <!--댓글의 삭제기능 deleteComment()로 form 생성 post방식-->
+              </div>
+            <%}
+          }%> 
+          <div class="col-sm-2 text-right hide" id="withTextArea<%=posts.comments[i]._id%>">
+              <button type="submit" class="btn btn-sm btn btn-info" id="btnUpdate" onclick="updateComment('<%=posts._id%>','<%=posts.comments[i]._id%>')">수정</button>
+              <!--댓글의 수정기능 updateComment()로 form 생성 post방식-->
+          </div>
+        </div>
+      </div>   
+    <%}%>
+    <!--로그인한 상태라면 댓글창 생성.--> 
+    <% if(session){ %>
+      <div id="comment-write" class="row">
+        <div class="col-md-12">
+          <div class="widget-area no-padding blank">
+            <div class="status-upload">
+              <!--댓글의 생성기능 form 생성 post방식-->
+              <form method="post" action="/community/comment/create">
+                <input type="hidden" name="communityId" value="<%=posts._id%>"><!--전달되는 값 : 해당 게시글 오브젝트 아이디-->
+                <textarea placeholder="댓글을 남겨주세요" name="contents" id="comentInput"style="resize: none;" ></textarea><!--전달되는 값 : 댓글 내용-->
+                <button type="submit" id="comment-write-btn"class="btn btn-primary">등록</button><!--submit 버튼-->
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>                 
+    <% } %>
+    <div class="form-group row">
+      <div id="btn">
+        <!--목록으로를 누르면 해당 카테고리 커뮤니티게시판 이동-->     
+        <button type="button" class="btn btn-outline-dark" id="btnList" onclick="javascript:location.href='/community?ctype=<%=ctype%>'">목록으로</button>
+      </div>     
+    </div>  
+  </div>
+  <!--footer-->
+  <div class="footer">
+      <% include ../footer.ejs %>
+  </div>
+    <!--부트스트랩 js-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

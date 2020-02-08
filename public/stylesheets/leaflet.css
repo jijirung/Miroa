@@ -1,0 +1,103 @@
+/* .containerLeaflet{
+  display: flex;
+  justify-content: space-around;
+} */
+
+.containerLeaflet{
+  /* width: 100%;
+  margint-left: auto;
+  margin-right: auto; */
+
+  /* display: flex;
+  justify-content: center; */
+
+  justify-content: space-between;
+
+}
+.loc {
+  display:flex;
+  /* justify-content: space-around; */
+flex-wrap:  wrap;
+  /*justify-content:center;*/
+
+}
+
+.loc div{
+
+}
+#next{
+
+}
+
+.leaflet{
+  margin: 10px;
+  background: #EED7AA;
+  width:200px;
+  height:280px;
+  text-align: center;
+  border-style: dashed;
+  border-color: #CFA636;
+  border-width: 2px;
+  overflow: hidden;
+}
+.leaflet img{
+  margin: 10px;
+  width:150px;
+  height:150px;
+  border-style: solid;
+  border-width: 1px;
+  background: #Fafafa;
+}
+
+.leaflet div{
+  display: inline-block;
+}
+
+.buttonDiv {
+  padding-top: 10px;
+  padding-right: 15px;
+  float: right;
+}
+.buttonDiv div{
+  padding-left: 5px;
+  float: right;
+}
+
+.type {
+  margin: 10px;
+  width: 150px;
+  height:23px;
+
+    display: inline-block;
+}
+#find{
+  background: #519800;
+  color:#fafafa;
+}
+#lost{
+  background: #FF8224;
+  color:#fafafa;
+}
+
+#date{
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+#next{
+      text-align: center;
+}
+#next a{
+  margin-left:10px;
+  margin-right:10px;
+}
+#date {
+  overflow: hidden;
+  max-width:180px;
+  font-size: 0.7vw;
+}
+#location{
+  overflow: hidden;
+  max-width:150px;
+  font-size: 0.7vw;
+}

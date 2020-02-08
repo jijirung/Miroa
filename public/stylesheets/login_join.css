@@ -1,0 +1,30 @@
+/*login.ejs, join.ejs*/
+body {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+}
+html, body {
+    height: 100%;
+}
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}
+div#alert-danger,div#alert-success {
+    margin-bottom: 0rem;
+    padding: 0.3rem 1.25rem;
+}
+input#phone{
+    margin-bottom: 1rem;
+}
+div#join {
+    margin-top: 15px;
+}
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>분양 신청</title>
+    <!--부트스트랩 css-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+
+<body>
+    <!-- 유저 분양 동물 신청 폼 -->
+    <div class="container">
+        <form action="/miroapet/userlist/apply" method="post" onsubmit="return checks()">
+            <% if(session.user) {%>
+            <div class="list_box">
+                <label><mark><%=session.user.id%></mark>의 신청</label>
+            </div>
+            <div class="form-group">
+                분양글작성자 : <mark><%=aid%></mark><br>
+                <input type="text" name="aid" value="<%=aid%>" hidden>
+                신청 글번호 : <mark><%=ano%></mark><br>
+                <input type="text" hidden name="ano" value="<%=ano%>">
+                신청자 아이디 : <mark><%=session.user.id%></mark><br>
+                신청자 이름 : <mark><%=session.user.name%></mark><br>
+                신청자 연락처 : <mark><%=session.user.phone%></mark><br>
+            <%}%>
+        </div>
+        희망 방문일<br>
+        <input class="form-control" type="date" name="vday" id="day">
+        <br>
+        희망 방문 시간 <input type="time" name="vtime" id="ti" class="form-control"> <br>
+        <div class="form-group">전달할 메세지<br> <textarea name="msg" class="form-control"></textarea><br>
+        <input type="checkbox"  class="form" id="check" name="agree">회원 정보 정보 제공에 동의하시겠습니까?<br>  
+        <div class="text-center"><input type="submit" class="btn btn-success" name="apply" value="신청하기" id="btn" disabled></div>
+    
+        </form>
+    </div>
+    <script type="text/javascript">
+        $("#check").change(function () {
+            if ($("#check").is(":checked")) {
+                alert("정보 제공에 동의하셨습니다.");
+                $("#btn").attr("disabled", !this.checked);
+            } else {
+                $("#btn").attr("disabled", !this.checked);
+            }
+        });
+        function checks() {
+            if ($("#day").val() == "") {
+                alert("희망 방문일을 입력해주세요.");
+                $("#day").focus();
+                return false;
+            }
+            if ($("#ti").val() == "") {
+                alert("희망 방문시간을 입력해주세요.");
+                $("#ti").focus();
+                return false;
+            }
+
+        }
+    </script>
+    <!--부트스트랩 js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

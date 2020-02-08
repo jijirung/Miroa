@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>미로아펫</title>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link rel='stylesheet' href='/stylesheets/imgstyle.css' />
+	<script type="text/javascript">
+		//댓글 수정
+		function updateComment(boardId, i) {
+			$('#comm' + i).attr('style', "display:none;");
+			$('#btup' + i).attr('style', "display:none;");
+			$('#btsa' + i).show();
+			var hiddenField = document.createElement("textarea");
+			hiddenField.setAttribute("class", "form-control");
+			hiddenField.setAttribute("type", "text");
+			hiddenField.setAttribute("name", "updateCo");
+			hiddenField.setAttribute("id", "updateCo");
+			hiddenField.setAttribute("value", $('#comm' + i).html());
+			$('#commp' + i).append(hiddenField);
+		}
+		//댓글 삭제
+		function deleteComment(no, read_id, commentId) {
+
+			var form = document.createElement("form");
+			form.setAttribute("charset", "UTF-8");
+			form.setAttribute("method", "Post");  //Post 방식
+			form.setAttribute("action", "/miroapet/userlist/comment/delete?ano=" + no); //요청 보낼 주소
+
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "read_id");
+			hiddenField.setAttribute("value", read_id);
+			form.appendChild(hiddenField);
+
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "commentId");
+			hiddenField.setAttribute("value", commentId);
+			form.appendChild(hiddenField);
+
+			document.body.appendChild(form);
+			form.submit();
+		}
+		//댓글 수정사항 저장
+		function saveComment(no, read_id, commentId) {
+			var form = document.createElement("form");
+			form.setAttribute("charset", "UTF-8");
+			form.setAttribute("method", "Post");  //Post 방식
+			form.setAttribute("action", "/miroapet/userlist/comment/save?ano=" + no); //요청 보낼 주소
+
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "read_id");
+			hiddenField.setAttribute("value", read_id);
+			form.appendChild(hiddenField);
+
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "commentId");
+			hiddenField.setAttribute("value", commentId);
+			form.appendChild(hiddenField);
+
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "text");
+			hiddenField.setAttribute("name", "updateCo");
+			hiddenField.setAttribute("value", $('#updateCo').val());
+			form.append(hiddenField);
+
+			document.body.appendChild(form);
+			form.submit();
+
+
+		}
+		//게시물 수정
+		function updateBoard(ano) {
+			var form = document.createElement("form");
+			form.setAttribute("charset", "UTF-8");
+			form.setAttribute("method", "Get");  //Post 방식
+			form.setAttribute("action", "/miroapet/userlist/update"); //요청 보낼 주소
+
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "ano");
+			hiddenField.setAttribute("value", ano);
+			form.appendChild(hiddenField);
+
+
+			document.body.appendChild(form);
+			form.submit();
+		}
+		//게시물 삭제
+		function deleteBoard(ano) {
+			var form = document.createElement("form");
+			form.setAttribute("charset", "UTF-8");
+			form.setAttribute("method", "Post");  //Post 방식
+			form.setAttribute("action", "/miroapet/userlist/delete"); //요청 보낼 주소
+
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "ano");
+			hiddenField.setAttribute("value", ano);
+			form.appendChild(hiddenField);
+
+			document.body.appendChild(form);
+			form.submit();
+		}
+	</script>
+	<!--모바일 최적화-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<div class="header">
+		<% include ../header.ejs %>
+	</div>
+	<!-- 유저분양리스트 -->
+	<div class="container">
+		<h4 class="font-weight-bold text-center"">분양 정보</h4><br><br>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label font-weight-bold">제목 </label>
+			<div class="col-sm-10">
+				<%=readitem.title%>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label font-weight-bold">글번호 </label>
+			<div class="col-sm-10">
+				<%=readitem.ano%>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label font-weight-bold">작성 시간 </label>
+			<div class="col-sm-10">
+				<%=moment(readitem.time).format('YYYY-MM-DD hh:mm:ss')%>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label font-weight-bold">조회수 </label>
+			<div class="col-sm-10">
+				<%=readitem.views%>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label font-weight-bold">작성자 </label>
+			<div class="col-sm-10">
+				<%=readitem.id%>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label font-weight-bold">상태 </label>
+			<div class="col-sm-10">
+				<%if(readitem.state=='ing'){%>
+					분양중
+				<%}else if(readitem.state=='end'){%>
+					완료
+				<%}%>
+			</div>     
+		</div>
+		<div class="form-group row">         
+			<label class="col-sm-2 col-form-label font-weight-bold" >종류 </label>
+				<div class="col-sm-10">      
+						<%if(readitem.kinds=='cat'){%>고양이<%}else if(readitem.kinds=='dog'){%>개<%}else{%>그 외<%}%>
+				</div>     
+		</div>
+		<div class="form-group row">         
+			<label class="col-sm-2 col-form-label font-weight-bold" >성별 </label>
+			<div class="col-sm-10">      
+					<%if(readitem.petgender=='female'){%>암컷<%}else if(readitem.petgender=='male'){%>수컷<%}else{%>모름<%}%>
+			</div>     
+		</div>
+		<div class="form-group row">         
+			<label class="col-sm-2 col-form-label font-weight-bold" >사진</label>
+			<div class="col-sm-10">      
+				<img src="<%=readitem.img%>" width="600">
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label font-weight-bold">내용 </label>
+			<div class="col-sm-10">
+				<pre><%=readitem.contents%></pre>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<%if(readitem.state=='ing'){%>
+					<div class="text-center">
+					<button class="btn btn-success"
+					onclick="window.open('/miroapet/userlist/apply?ano=<%=readitem.ano%>&aid=<%=readitem.id%>','window_name','width=430,height=500,location=no,status=no,scrollbars=yes');">분양신청</button>
+					</div>
+				<%}else if(readitem.state=='end'){%>
+					<h4 class="font-weight-bold text-center">[분양이 완료되었습니다.]</h4>
+				<%}%>
+			</div>     
+		</div>
+		<hr>
+		<div class="form-group row">
+			<div class="col-sm-12 text-right">
+				<% if (session.user&&readitem.id == session.user.id) {%>
+					<button onclick="updateBoard('<%=readitem.ano%>')" class="btn btn-info">수정</button>
+					<button onclick="deleteBoard('<%=readitem.ano%>')" class="btn btn-danger">삭제</button>
+				<%}%>
+			</div>
+		</div>
+		<hr>
+		
+		<div class="form-group row">        
+			<label class="col-sm-2 col-form-label font-weight-bold" >댓글</label>  
+		</div>
+		<% if (readitem.comments !== null) { 
+        	var comment = readitem.comments; 
+          	for(var i = 0; i < readitem.comments.length; i++) {%>
+				<div>
+					<span class="font-weight-bold"><%=comment[i].writer%> </span>
+					<span><%=moment(comment[i].createdAt).format('YYYY-MM-DD hh:mm:ss')%></span>
+				</div>
+				<% if(session.user&&comment[i].writer == session.user.id ){ %>
+					<div class="text-right"><input type="button" class="btn btn-info" value="수정" id='btup<%=i%>'
+						onclick="updateComment('<%=readitem._id%>', '<%=i%>')">
+					<input type="button" class="btn btn-warning" value="저장" id='btsa<%=i%>'
+						style="display:none;color: white;" display=none
+						onclick="saveComment('<%=readitem.ano%>','<%=readitem._id%>','<%=comment[i]._id%>')">
+					<input class="btn btn-danger" type="button" value="삭제"
+						onclick="deleteComment('<%=readitem.ano%>','<%=readitem._id%>','<%=comment[i]._id%>')">
+					</div>
+				<% } %>
+					
+				<div class="form-group row">
+					<div class="col-sm-9" id='commp<%=i%>'>
+						<div><pre><%=comment[i].content%></pre></div>
+					</div>
+					<div class="col-sm-10 hide" id='comm<%=i%>'>
+					</div>
+				</div>
+				<hr>
+		<%}}%>
+		<%if(session.user&&readitem.ano){%>
+			<div id="comment-write" class="row">
+				<div class="col-md-12">
+					<div class="widget-area no-padding blank">
+						<div class="status-upload">
+							<form action="/miroapet/userlist/comment/write?ano=<%=readitem.ano%>" method="post">
+								<textarea name="content" style="resize: none;"
+									placeholder="댓글을 남겨주세요."></textarea>
+								<button type="submit" id="comment-write-btn" class="btn btn-primary">등록</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		<%}else{%>
+			<label>로그인 이후 댓글을 남기실 수 있습니다.</label>
+		<%}%>
+		<% if (pn !== null) { %>
+			<div class="form-group row">
+				<div id="bbtn">    
+				<button type="button" class="btn btn-outline-dark" id="btnList" onclick="javascript:location.href='/miroapet/userlist?pageNo=<%=pn%>'">목록으로</button>
+				</div>     
+			</div>  
+		<%}%>
+		
+	</div>
+	
+	<div class="footer">
+		<% include ../footer.ejs %>
+	</div>
+	<!--부트스트랩 js-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

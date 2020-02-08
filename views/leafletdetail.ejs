@@ -1,0 +1,126 @@
+<html>
+<head>
+  <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <style>
+    #img{
+      width:500px;
+      height:auto;
+    }
+  </style>
+</head>
+<body>
+    <div class="header">
+				<% include ./header.ejs %>
+			</div>
+  <div class="container" style="min-height:800px;">
+  <div class="containerLeaflet">
+    <% if (leaflet!==null){
+    %>
+    <%  if(leaflet.type=='find'){%>
+        <h4 class="font-weight-bold text-center"">발견 신고</h4><br><br>
+        <%}else if(leaflet.type=='lost'){%>
+          <h4 class="font-weight-bold text-center"">실종 신고</h4><br><br>
+          <%}%>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label font-weight-bold">제목 </label>
+          <div class="col-sm-10">
+              <%=leaflet.title%>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label font-weight-bold">작성자 </label>
+          <div class="col-sm-10">
+              <%=leaflet.id%>
+          </div>
+        </div>
+        <%  if(leaflet.type=='find'){%>
+            <div class="form-group row">         
+                <label class="col-sm-2 col-form-label font-weight-bold" >사진</label>
+                <div class="col-sm-10">      
+                  <img src="<%=leaflet.img%>" width="600">
+                </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-sm-2 col-form-label font-weight-bold"> 발견 일시 </label>
+                  <div class="col-sm-10">
+                      <%=leaflet.date%>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label font-weight-bold">발견 위치 </label>
+                    <div class="col-sm-10">
+                        <%=leaflet.location%>
+                    </div>
+                  </div>
+          <%}else if(leaflet.type=='lost'){%>
+            <div class="form-group row">         
+                <label class="col-sm-2 col-form-label font-weight-bold" >사진</label>
+                <div class="col-sm-10">      
+                  <img src="<%=leaflet.img%>" width="600">
+                </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-sm-2 col-form-label font-weight-bold"> 실종 일시 </label>
+                  <div class="col-sm-10">
+                      <%=leaflet.date%>
+                  </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label font-weight-bold">실종 위치 </label>
+                    <div class="col-sm-10">
+                        <%=leaflet.location%>
+                    </div>
+                  </div>
+
+            <%}%>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold">동물 종류 </label>
+                <div class="col-sm-10">
+                    <%=leaflet.kinds%>
+                </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-sm-2 col-form-label font-weight-bold">특징 </label>
+                  <div class="col-sm-10">
+                      <%=leaflet.distinction%>
+                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label font-weight-bold">종료 여부 </label>
+                <div class="col-sm-10">
+                    <%if(leaflet.state==1){%>
+                      진행중
+                      <%}else{%>
+                      종료
+                      <%}%>
+                    
+                </div>
+            </div>
+
+      </div>
+  <%  } %>
+ 
+  <div class="buttonDiv text-center" >
+    <% if(session.user){%>
+      <br>
+
+  <%if(session.user.name==leaflet.id){%>
+  <button type="button" class="btn btn-info"  onclick = "location.href = '/leaflet/update?_id=<%=leaflet._id%>'">수정하기</button>
+  <button type="button" class="btn btn-danger" onclick="location.href = '/leaflet/delete?_id=<%=leaflet._id%>'">삭제하기</bitton>
+<%}else{%>
+  <button type="button" class="btn btn-success" onclick = "location.href = '/leaflet/chatWith?room=<%=leaflet.id%>'">작성자와 채팅하기</button>
+<%}} else {%>
+<br>
+      <span>작성자와의 채팅은 로그인 후 이용할 수 있습니다.</span>
+            <div><a href="/users/login">로그인</a></div>
+        <%}%>
+
+  </div>
+</div>
+</div>
+<div class="footer">
+    <% include ./footer.ejs %>
+  </div>
+</body>
+</html>

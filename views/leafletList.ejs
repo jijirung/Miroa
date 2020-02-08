@@ -1,0 +1,87 @@
+<html>
+<head>
+  <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link rel='stylesheet' href='/stylesheets/leaflet.css' />
+</head>
+<body>
+    <div class="header">
+        <% include ./header.ejs %>
+    </div>
+    <div class="banner">
+            <% include ./lbanner.ejs %>
+    </div>
+  <div class='container'>
+    <h4 class="font-weight-bold">실종/발견 리스트</h4><br>
+  <div class="containerLeaflet">
+    <div id="loc0" class="loc"></div>
+    <div id="next"></div>
+
+  </div>
+  <div class="buttonDiv">
+      <% if(session.user){%>
+    <button type="button" class="btn btn-success" onclick = "location.href = '/leaflet/add'">신고/제보 하기</button>
+      <%}else{%>
+        <span>신고/제보는 로그인 후 이용할 수 있습니다.</span>
+        <div><a href="/users/login">로그인</a></div>
+      <%}%>
+  </div>
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type='text/javascript'>
+    var leaflet= <%-JSON.stringify(leaflet)%>;
+      if(leaflet!==null){
+        var leng = leaflet.length;
+        console.log(leng);
+        if(leng<20)
+          SetList(0,leng);
+          else {
+            SetList(0,20);
+          }
+        for(var k=0;k<=Math.floor(leaflet.length/20);k++){
+          $("#next").append("<a href=\"#\"  OnClick=\"NextPage("+k*20+")\">"+Math.floor(k+1)+"</a>");
+        }
+        $("#next").append("-");
+        $("#next").prepend("-");
+      }
+
+    function SetList(startNumber,endNumber){
+      var j=0;
+        for(var i=startNumber;i<endNumber;i++){
+          var locNumber=Math.floor(j/5);
+           //var loc="#loc"+locNumber;
+          var loc="#loc0"
+          var divloc=loc+"_"+j;
+          console.log(loc+"   "+divloc);
+          $(loc).append("<div id='"+loc.replace("#","")+"_"+j+"' class='leaflet'  OnClick=\"location.href ='/leaflet/detail?_id="+leaflet[i]._id+"'\">");
+            if(leaflet[i].type=='find'){
+              $(divloc).append("<div class='type' id='find'><strong>발견했습니다</strong></div><br>");
+              $(divloc).append("<img id='img' class=\"img-rounded\" alt=\"Responsive image\" src="+leaflet[i].img+"><br>");
+              $(divloc).append("<div id='date'><strong>발견 일시</strong>  : "+leaflet[i].date+"</div><br>");
+              $(divloc).append("<div id='location'><strong>발견 장소</strong> :  "+leaflet[i].location+"</div>");
+
+          }else if(leaflet[i].type=='lost'){
+            $(divloc).append("<div class='type' id='lost'> <strong>실종됐습니다</strong> </div><br>");
+            $(divloc).append("<img id='img' class=\"img-rounded\" alt=\"Responsive image\" src="+leaflet[i].img+"><br>");
+            $(divloc).append("<div  id='date'><strong>실종 일시</strong> : "+leaflet[i].date+"</div><br>");
+            $(divloc).append("<div id='location'><strong>실종 장소</strong> : "+leaflet[i].location+"</div>");
+          }
+          j++;
+      }
+    }
+    function NextPage(startNumber){
+      $("#loc0").empty();
+      if(leng<startNumber+20){
+        SetList(startNumber,leng);
+      }else {
+        SetList(startNumber,startNumber+20);
+      }
+    }
+    </script>
+     <div class="footer">
+        <% include ./footer.ejs %>
+      </div>
+      <!--부트스트랩 js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.js"></script>
+</body>
+</html>

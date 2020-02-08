@@ -1,0 +1,30 @@
+<!--Code by 정지형-->
+<html>
+<head>
+    <title>미로아펫</title>
+    <!--부트스트랩 css-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!--login_join css-->
+    <link rel='stylesheet' href='/stylesheets/login_join.css' />
+</head>
+
+<body class="text-center">
+    <!--로그인 폼. Sign in 버튼을 누르면 post방식으로 /users/login 이동-->
+    <form class="form-signin" action="/users/login" method="post">
+        <img class="mb-4" src="/images/logo.png" alt="" width="122">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <label for="inputId" class="sr-only">ID</label>
+        <input type="text" id="id" name="id" class="form-control" placeholder="ID" required="" autofocus=""> <!--전달되는 값 : id-->
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="pwd"name="password" class="form-control" placeholder="Password" required=""> <!--전달되는 값 : password-->
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button><!--submit 버튼-->
+        <div id ="join">계정이 없으신가요? <a href="/users/join">가입하기</div><!--링크 누를시 join.ejs페이지 이동-->
+        <p class="mt-5 mb-3 text-muted">© copy right - MiroaPet</p>       
+    </form>
+    
+   <!--부트스트랩 js-->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

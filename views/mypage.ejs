@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>미로아펫</title>
+  <!--나눔 폰트 사용-->
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+  <!--부트스트랩 css-->
+  <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">   
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/tablestyle.css' />
+  <script type="text/javascript">
+    function deleteapply(applyid) {
+      var form = document.createElement("form");
+      form.setAttribute("charset", "UTF-8");
+      form.setAttribute("method", "Post");  //Post 방식
+      form.setAttribute("action", "/users/mypage/adelete"); //요청 보낼 주소
+
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "applyid");
+      hiddenField.setAttribute("value", applyid);
+      form.appendChild(hiddenField);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+    function acceptapply(applyid) {
+      var form = document.createElement("form");
+      form.setAttribute("charset", "UTF-8");
+      form.setAttribute("method", "Post");  //Post 방식
+      form.setAttribute("action", "/users/mypage/aaccept"); //요청 보낼 주소
+
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "applyid");
+      hiddenField.setAttribute("value", applyid);
+      form.appendChild(hiddenField);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+    function acceptapply(applyid) {
+      var form = document.createElement("form");
+      form.setAttribute("charset", "UTF-8");
+      form.setAttribute("method", "Post");  //Post 방식
+      form.setAttribute("action", "/users/mypage/aaccept"); //요청 보낼 주소
+
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "applyid");
+      hiddenField.setAttribute("value", applyid);
+      form.appendChild(hiddenField);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+    function cancelapply(applyid) {
+      var form = document.createElement("form");
+      form.setAttribute("charset", "UTF-8");
+      form.setAttribute("method", "Post");  //Post 방식
+      form.setAttribute("action", "/users/mypage/acancel"); //요청 보낼 주소
+
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "applyid");
+      hiddenField.setAttribute("value", applyid);
+      form.appendChild(hiddenField);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+    function completelapply(applyid,ano) {
+      var form = document.createElement("form");
+      form.setAttribute("charset", "UTF-8");
+      form.setAttribute("method", "Post");  //Post 방식
+      form.setAttribute("action", "/users/mypage/acomplete"); //요청 보낼 주소
+
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "applyid");
+      hiddenField.setAttribute("value", applyid);
+      form.appendChild(hiddenField);
+
+      var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "ano");
+			hiddenField.setAttribute("value", ano);
+			form.appendChild(hiddenField);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function deleteapiapply(apiapplyid) {
+      var form = document.createElement("form");
+      form.setAttribute("charset", "UTF-8");
+      form.setAttribute("method", "Post");  //Post 방식
+      form.setAttribute("action", "/users/mypage/aadelete"); //요청 보낼 주소
+
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "apiapplyid");
+      hiddenField.setAttribute("value", apiapplyid);
+      form.appendChild(hiddenField);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function adminaccept(apiapplyid) {
+      var form = document.createElement("form");
+      form.setAttribute("charset", "UTF-8");
+      form.setAttribute("method", "Post");  //Post 방식
+      form.setAttribute("action", "/users/mypage/adminaccept"); //요청 보낼 주소
+
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "apiapplyid");
+      hiddenField.setAttribute("value", apiapplyid);
+      form.appendChild(hiddenField);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+    function admincancel(apiapplyid) {
+      var form = document.createElement("form");
+      form.setAttribute("charset", "UTF-8");
+      form.setAttribute("method", "Post");  //Post 방식
+      form.setAttribute("action", "/users/mypage/admincancel"); //요청 보낼 주소
+
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "apiapplyid");
+      hiddenField.setAttribute("value", apiapplyid);
+      form.appendChild(hiddenField);
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <div class="header">
+      <% include ./header.ejs %>
+  </div>
+  <div class="container" style="min-height:800px;">
+    <% if(session.user) {%>
+      <div class="list_box">
+      <label><h4 class="font-weight-bold"><mark><%=session.user.id%></mark>의 마이페이지</h4></label>
+      </div>
+      <form name="form" id="form" role="form" method="post" action="/users/mypage/update">
+        <div class="form-group row">  
+          <div class="col-sm-12 text-right">
+            <button type="submit" class="btn btn-info" id="btnUpdate">수정</button>   
+          </div>
+        </div> 
+        <div class="form-group row">      
+            <label class="col-sm-2 col-form-label font-weight-bold">이름</label>
+            <div class="col-sm-4">    
+              <input type="text" class="form-control" name="name" id="name" value="<%=session.user.name%>">
+            </div>
+            <label class="col-sm-2 col-form-label font-weight-bold">전화번호</label>
+            <div class="col-sm-4">    
+                <input type="text" class="form-control" name="phone" id="phone" value="<%=session.user.phone%>">
+            </div>
+        </div>
+      </form>
+  <div>
+    나의 분양 신청 목록
+    <div class="table-responsive">
+        <table border="1" class="table">
+      <tr>
+        <th>글번호</th>
+        <th>희망 방문 예정일</th>
+        <th>희망 방문 시간</th>
+        <th>남긴말</th>
+        <th>신청일</th>
+        <th>상태</th>
+        <th>관리</th>
+        <th>등록자 연락처</th>
+      </tr>
+      <% if (item&&item.length > 0) {%>
+      <% item.forEach(item => {%>
+      <tr>
+        <td><a href="/miroapet/userlist/read?ano=<%=item.ano%>"><%=item.ano%></a></td>
+        <td><%=item.vday%></td>
+        <td><%=item.vtime%></td>
+        <td><%=item.msg%></td>
+        <td><%=moment(item.applidate).format('YYYY-MM-DD hh:mm:ss')%></td>
+        <td><%=item.state%></td>
+        <td><%if(item.state=='신청중'){%><input class="btn btn-danger" type="button" value="신청 취소" onclick="button_event('<%=item._id%>')">
+          <%}else{%>취소불가<%}%></td>
+        <td><%=item.aphone%></td>
+      </tr>
+      <% }); %>
+      <% } else { %>
+      <tr>
+        <td colspan="8">분양 신청 목록이 없습니다.</td>
+      </tr>
+      <% } %>
+    </table>
+    </div>
+  </div>
+
+  <div>
+      분양 등록 신청 현황
+      <div>
+      <table border="1" class="table">
+        <tr>
+          <th>글번호</th>
+          <th>희망 방문 예정일</th>
+          <th>희망 방문 시간</th>
+          <th>남긴말</th>
+          <th>신청일</th>
+          <th>상태</th>
+          <th>관리</th>
+          <th>신청자 아이디</th>
+          <th>신청자 이름</th>
+          <th>신청자 연락처</th>
+        </tr>
+        <% if (as.length > 0) {%>
+        <% as.forEach(as => {%>
+        <tr>
+          <td><a href="/miroapet/userlist/read?ano=<%=as.ano%>"><%=as.ano%></a></td>
+          <td><%=as.vday%></td>
+          <td><%=as.vtime%></td>
+          <td><%=as.msg%></td>
+          <td><%=moment(as.applidate).format('YYYY-MM-DD hh:mm:ss')%></td>
+          <td><%=as.state%></td>
+          <td><%if(as.state=='신청중'){%><input class="btn btn-success" type="button" value="승인" onclick="button_event2('<%=as._id%>')"><input class="btn btn-danger" type="button"value="거절" onclick="button_event3('<%=as._id%>')">
+            <%}else if(as.state=='승인'){%><input class="btn btn-danger" type="button" value="취소" onclick="button_event3('<%=as._id%>')">
+            <input class="btn btn-success" type="button" value="완료" onclick="button_event4('<%=as._id%>','<%=as.ano%>')"><%}else{%>
+              <%=as.state%><%}%></td>
+          <%if(as.state=='승인'){%><td><%=as.id%></td>
+            <td><%=as.name%></td>
+            <td><%=as.phone%></td>
+          <%}else{%><td colspan="3">승인 상태에서만 확인 가능합니다.</td><%}%>
+        </tr>
+        <% }); %>
+        <% } else { %>
+        <tr>
+          <td colspan="10">등록된 신청 목록이 없습니다.</td>
+        </tr>
+        <% } %>
+      </table>
+    </div>
+    </div>
+  <%}%>
+  <div>
+      보호소 분양 신청 현황
+      <div class="table-responsive">
+      <table border="1" class="table">
+        <tr>
+          <th>보호소 이름</th>
+          <th>보호소 연락처</th>
+          <th>보호 장소</th>
+          <th>담당자</th>
+          <th>담당자 연락처</th>
+          <th>신청일</th>
+          <th>신청사항 상세보기</th>
+          <th>상태</th>
+          <th>관리</th>
+        </tr>
+        <% if (aa.length > 0) {%>
+          <% aa.forEach(aa => {%>
+            <tr>
+              <td><%=aa.careNm%></td>
+              <td><%=aa.careTel%></td>
+              <td><%=aa.careAddr%></td>
+              <td><%=aa.chargeNm%></td>
+              <td><%=aa.officetel%></td>
+              <td><%=moment(item.applidate).format('YYYY-MM-DD hh:mm:ss')%></td>
+              <td><input class="btn btn-primary" type="button" value="상세보기" onclick="window.open('/users/mypage/applysangse?noid=<%=aa._id%>','window_name','width=430,height=500,location=no,status=no,scrollbars=yes');"></td>
+              <td><%=aa.state%></td>
+              <td><%if(aa.state=='심사중'){%><input type="button" class="btn btn-danger" value="신청 취소" onclick="button_event5('<%=aa._id%>')"><%}else{%>취소불가<%}%></td>
+            </tr>
+        <% }); %>
+        <% } else { %>
+        <tr>
+          <td colspan="10">등록된 신청 목록이 없습니다.</td>
+        </tr>
+        <% } %>
+        </table>
+        </div>
+  </div>
+  <% if(session.user.id=='admin'&&adminapply){%>
+    api관리자
+    <div>
+        보호소 분양 신청 현황
+        <table border="1">
+          <tr>
+            <th>신청자 아이디</th>
+            <th>신청사항 상세보기</th>
+            <th>상태</th>
+            <th>관리</th>
+          </tr>
+          <% if (adminapply.length > 0) {%>
+            <% adminapply.forEach(adminapply => {%>
+              <tr>
+                <td><%=adminapply.id%></td>
+                <td><input class="btn btn-primary" type="button" value="상세보기" onclick="window.open('/users/mypage/applysangse?noid=<%=adminapply._id%>','window_name','width=430,height=500,location=no,status=no,scrollbars=yes');"></td>
+                <td><%=adminapply.state%></td>
+                <td><%if(adminapply.state=='심사중'){%><input class="btn btn-success" type="button" value="승인" onclick="adminaccept('<%=adminapply._id%>')"><input class="btn btn-danger" type="button" value="거절" onclick="admincancel('<%=adminapply._id%>')"><%}else{%>완료<%}%></td>
+              </tr>
+          <% }); %>
+          <% } else { %>
+          <tr>
+            <td colspan="10">등록된 신청 목록이 없습니다.</td>
+          </tr>
+          <% } %>
+          </table>       
+    </div>
+    <div>
+      <br><br>
+      <h4>사이트 관리 - 이미지 추가</h4>
+      <form method="post" action="/intro/upload"  enctype="multipart/form-data">
+        <select class="form-control" id="kinds" name="kinds">
+          <option value="intro">소개 페이지 이미지</option>
+          <option value="userbanner">유저 배너 페이지 이미지</option>
+          <option value="apibanner">보호소 배너 페이지 이미지</option>
+        </select>
+  
+        <div class="thumnail_img">
+          <label>이미지 첨부(파일을 아무곳에나 드래그 해도 첨부됩니다.)</label><br />
+          <input type="file" name="imgfile" id="image" />
+        </div>
+        <div id="image_preview">
+          <img src="#" width="300" hidden />
+          <br />
+          <a href="#" hidden>지우기</a>
+        </div>
+        <input class="btn btn-primary" type="submit" value="첨부">
+    </div>
+    </form>
+    <script type="text/javascript">
+      //파일 업로드 이미지 미리보기
+      $('#image').on('change', function () {
+        ext = $(this).val().split('.').pop().toLowerCase(); //확장자
+        //배열에 추출한 확장자가 존재하는지 체크
+        if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+          resetFormElement($(this));
+          window.alert('이미지 파일이 아닙니다! (gif, png, jpg, jpeg 만 업로드 가능)');
+        } else {
+          file = $('#image').prop("files")[0];
+          blobURL = window.URL.createObjectURL(file);
+          $('#image_preview img').attr('src', blobURL);
+          $('#image_preview img').attr('hidden', false);
+          $('#image_preview a').attr('hidden', false);
+          $('#image_preview').slideDown();
+          $(this).slideUp();
+        }
+      });
+      $('#image_preview a').bind('click', function () {
+        resetFormElement($('#image')); //전달한 양식 초기화
+        $('#image').slideDown();
+        $(this).parent().slideUp();
+        $('#image_preview img').attr('hidden', true);
+        $('#image_preview a').attr('hidden', true);
+        return false; //기본 이벤트 막음
+      });
+  
+      function resetFormElement(e) {
+        e.wrap('<form>').closest('form').get(0).reset();
+        e.unwrap(); //감싼 <form> 태그를 제거
+      }
+      //드래그로 파일업로드
+      $(document).on("dragover drop", function (e) {
+        e.preventDefault();  // allow dropping and don't navigate to file on drop
+      }).on("drop", function (e) {
+        $("input[type='file']")
+          .prop("files", e.originalEvent.dataTransfer.files)  // put files into element
+          .closest("form") // autosubmit as well
+        file = $('#image').prop("files")[0];
+        blobURL = window.URL.createObjectURL(file);
+        $('#image_preview img').attr('src', blobURL);
+        $('#image_preview img').attr('hidden', false);
+        $('#image_preview a').attr('hidden', false);
+        $('#image_preview').slideDown();
+        $('#image').slideUp();
+      });
+    </script>
+  <%}%>
+  
+</div>
+  <div class="footer">
+      <% include ./footer.ejs %>
+  </div>
+    <!--부트스트랩 js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+  <script type="text/javascript">
+    function button_event(applyid) {
+      if (confirm("정말 취소하시겠습니까?") == true) {    //확인
+        deleteapply(applyid);
+      } else {   //취소
+        return;
+      }
+    }
+    function button_event2(applyid) {
+      if (confirm("승인하시겠습니까?") == true) {    //확인
+        acceptapply(applyid);
+      } else {   //취소
+        return;
+      }
+    }
+    function button_event3(applyid) {
+      if (confirm("정말 취소하시겠습니까??") == true) {    //확인
+        cancelapply(applyid);
+      } else {   //취소
+        return;
+      }
+    }
+    function button_event5(applyid) {
+      if (confirm("정말 취소하시겠습니까??") == true) {    //확인
+        deleteapiapply(applyid);
+      } else {   //취소
+        return;
+      }
+    }
+    function button_event4(applyid,ano) {
+      if (confirm("마감하시겠습니까?") == true) {    //확인
+        completelapply(applyid,ano);
+      } else {   //취소
+        return;
+      }
+    }
+  </script>
+</html>

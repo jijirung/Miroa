@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>미로아펫</title>
+    <!--부트스트랩 css-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/aliststyle.css">
+    <script>
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="header">
+        <% include ../header.ejs %>
+    </div>
+    <div class="banner">
+        <% include ./ubanner.ejs %>
+    </div>
+    
+    <div class="container">
+        <div class="cnt">
+            <h4 class="font-weight-bold">유저 분양 리스트</h4><br>
+            <form class="form-inline my-2 my-lg-0" method="get" action="/miroapet/userlist/search">
+                <select class="form-control mr-sm-2" name="searchType">
+                    <% if(searchType&&searchType==1) {%>
+                    <option value="1" selected>제목</option>
+                    <option value="2">작성자</option>
+                    <% }else{%>
+                    <option value="1">제목</option>
+                    <option value="2" selected>작성자</option>
+                    <%}%>
+        </select>
+        <input class="form-control mr-sm-2" type="text" name="searchStr" value="<%=searchStr%>"/>
+        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="검색"/>
+        <div id="write">
+                <a href="/miroapet/userlist/write" class="btn btn-primary float-right">글쓰기</a>
+        </div> 
+      </form> 
+    </div>
+  
+    <div class="divlist">
+        <section class="alist">
+            <% if (userlistitem.length > 0) {%>
+                    <% userlistitem.forEach(userlistitem => {%>
+                        <div class="row list" style="border:2px solid rgb(253, 138, 105)">
+                        <a href="/miroapet/userlist/read?ano=<%=userlistitem.ano%>" class="text-dark page-link">
+                            <% if (userlistitem.img){%>
+                            <div class="img-hover">
+                                <img src="<%=userlistitem.img%>">
+                            </div>
+                            <%}%>
+                        <div>
+                        <div class="box2">
+                            <div class="box">
+                                <%=userlistitem.ano%>
+                            </div><br>
+                            <div class="span4">
+                                <h5 class="font-weight-bold"> 제목 : <%=userlistitem.title%></h5> 
+                                작성자 : <%=userlistitem.id%><br>
+                                등록일 : <%=moment(userlistitem.time).format('YYYY-MM-DD hh:mm:ss')%><br>
+                                조회수 : <%=userlistitem.views%><br>
+                            </div>
+                        </div>
+                        </div>
+                        </a>
+                    </div>
+        <% }); %>
+        <% } else { %>
+        <p>올라온 게시글이 없습니다!</p>
+        <% } %>
+        </section>
+    </div>
+    
+    <div class="cnt" ><li class="d-flex justify-content-center">페이지 <%-pn%> / <%-tc%></li>
+    </div>
+    <%if(!searchStr){%>
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            <%if(pn<=10){%>
+            <li class="page-item">
+                <a class="page-link">처음</a>
+            </li>
+            <%}%>
+            <%if(pn>10){%>
+            <li class="page-item">
+                <a class="page-link"
+                    href="/miroapet/userlist?pageNo=<%=Math.floor(parseInt(pn-1)/10)*10+1-10%>">[이전]</a>
+            </li>
+            <%}%>
+            <%for(var i=Math.floor(parseInt(pn-1)/10)*10+1;i<=Math.floor(parseInt(pn-1)/10)*10+10;i++){%>
+            <%if(i==pn){%>
+            <li class="page-item active">
+                <a class="page-link">
+                    <bold><%=i%></bold>
+                </a> </li><%}else if(i<=tc){%>
+            <li class="page-item">
+                <a class="page-link" href="/miroapet/userlist?pageNo=<%=i%>"><%=i%></a></li>
+            <%}%>
+            <%}%>
+            <%if(pn!=tc&&tc>10){%>
+            <li class="page-item">
+                <a class="page-link"
+                    href="/miroapet/userlist?pageNo=<%=Math.floor(parseInt(pn-1)/10)*10+1+10%>">[다음]</a>
+            </li>
+            <%}%>
+            <%if(pn==tc||tc<=10){%>
+            <li class="page-item">
+                <a class="page-link">끝</a>
+            </li>
+            <%}%>
+            </ul>
+        </div>
+        <%}else{%>
+            <div class="d-flex justify-content-center">
+                    <ul class="pagination">
+                        <%if(pn<=10){%>
+                        <li class="page-item">
+                            <a class="page-link">처음</a>
+                        </li>
+                        <%}%>
+                        <%if(pn>10){%>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="/miroapet/userlist/search?pageNo=<%=Math.floor(parseInt(pn-1)/10)*10+1-10%>&searchStr=<%=searchStr%>&searchType=<%=searchType%>">[이전]</a>
+                        </li>
+                        <%}%>
+                        <%for(var i=Math.floor(parseInt(pn-1)/10)*10+1;i<=Math.floor(parseInt(pn-1)/10)*10+10;i++){%>
+                        <%if(i==pn){%>
+                        <li class="page-item active">
+                            <a class="page-link">
+                                <bold><%=i%></bold>
+                            </a> </li><%}else if(i<=tc){%>
+                        <li class="page-item">
+                            <a class="page-link" href="/miroapet/userlist/search?pageNo=<%=i%>&searchStr=<%=searchStr%>&searchType=<%=searchType%>"><%=i%></a></li>
+                        <%}%>
+                        <%}%>
+                        <%if(pn!=tc&&tc>10){%>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="/miroapet/userlist/search?pageNo=<%=Math.floor(parseInt(pn-1)/10)*10+1+10%>&searchStr=<%=searchStr%>&searchType=<%=searchType%>">[다음]</a>
+                        </li>
+                        <%}%>
+                        <%if(pn==tc||tc<=10){%>
+                        <li class="page-item">
+                            <a class="page-link">끝</a>
+                        </li>
+                        <%}%>
+                        </ul>
+                    </div>
+            
+            <%}%>
+    </div>
+        <div class="footer">
+            <% include ../footer.ejs %>
+    </div>
+    <!--부트스트랩 js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

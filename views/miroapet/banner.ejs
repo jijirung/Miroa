@@ -1,0 +1,36 @@
+<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link rel='stylesheet' href='/stylesheets/header.css' />
+<script src="http://malsup.github.com/jquery.cycle2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.ajax({
+            type: 'GET',
+            url: '/intro/apibanner',
+            error : function(){
+                alert("통신실패");
+            },
+            success: function (banner) {
+                var html = '<div class="cycle-slideshow" data-cycle-fx="scrollHorz" data-cycle-pause-on-hover="true" data-cycle-speed="200" data-cycle-prev="#prev" data-cycle-next="#next" id="banner">';
+                for (var i = 0; i < banner.length; i++) {
+                    html += '<img src="' + banner[i].path+'">';
+                }
+                html+='</div>'
+                var s = document.createElement("script");
+                s.type = "text/javascript";
+                s.src = "http://malsup.github.com/jquery.cycle2.js";
+                var jq = document.createElement("script");
+                jq.type = "text/javascript";
+                jq.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js";
+                $('.uban').append(html);
+                $(".uban").append(jq);
+                $(".uban").append(s);
+            }
+        });
+    });
+</script>
+
+<div class="container" style="display:flex">
+    <!-- ajax를 이용한 배너이미지 불러오기 -->
+    <div class="uban"></div>
+</div>

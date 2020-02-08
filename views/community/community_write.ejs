@@ -1,0 +1,128 @@
+<!--Code by 정지형-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>미로아펫</title>
+    <!--나눔 폰트 사용-->
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+    <!--부트스트랩 css-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!--community css-->
+    <link href="/stylesheets/community.css" rel="stylesheet">
+  </head>
+  <body>
+    <!--header 네비게이션 메뉴-->
+    <div class="header">
+      <% include ../header.ejs %>
+    </div>
+    <!--main 높이 최소 800px-->
+    <div class="container" role="main" style="min-height:800px;">
+      <!--찾은 후기 에서 글쓰기/수정 버튼을 눌렀다면 ctype 1-->
+      <% if(ctype==1){%>
+        <h4 class="font-weight-bold">찾은 후기</h4><br>
+      <!--분양 후기 에서 글쓰기/수정 버튼을 눌렀다면 ctype 2-->  
+      <%}else if(ctype==2){%>
+        <h4 class="font-weight-bold">분양 후기</h4><br>
+      <!--소통 / 잡담 에서 글쓰기/수정 버튼을 눌렀다면 ctype 3--> 
+      <%}else{%>
+        <h4 class="font-weight-bold">소통 / 잡담</h4><br>
+      <%}%>
+      <!--posts값이 있다면 누른 게시물 detail에서 수정하기 버튼을 눌러 값이 넘어왔다는 것임.-->
+      <% if(posts){ %>
+        <form name="form" id="form" role="form" method="post" action="/community/update" enctype="multipart/form-data">
+          <input type="hidden" value="<%=posts._id%>" name="communityId">
+      <!--posts값이 없다면 게시판 list에서 글쓰기 버튼을 눌렀다는 것임.-->
+      <% }else{ %>
+        <form name="form" id="form" role="form" method="post" action="/community/create" enctype="multipart/form-data"> 
+      <%}%>
+        <div class="form-group row">        
+          <label class="col-sm-2 col-form-label" >제목</label>
+          <div class="col-sm-10">
+            <!--posts값이 있다면 수정하기므로 value값에 누른 게시물 detail의 제목값을 넣는다.-->
+            <% if(posts){ %>
+              <input type="text" class="form-control" name="title" id="title" value="<%=posts.title%>">
+            <!--posts값이 없다면 value값이 없는 input생성-->
+            <% }else{ %>
+              <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
+            <% } %>
+          </div>
+        </div>
+        <!--ctype이 3 즉 잡담/소통 카테고리가 아니라면 찾은 후기와 분양후기 이므로 동물종류 타입값을 받아야함-->
+        <% if(ctype != 3){ %>
+          <div class="form-group row"> 
+            <label class="col-sm-2 col-form-label">동물종류</label>
+            <div class="col-sm-10">        
+              <select name="type">
+                <!--posts값이 있다면-->                 
+                <% if(posts){ 
+                  <!--posts.type(동물종류)의 값이 개라면 개를 체크한다.-->
+                  if(posts.type=="개"){ %> 
+                    <option value="개" selected>개</option>
+                    <option value="고양이" >고양이</option>
+                    <option value="그 외" >그 외</option>
+                  <!--posts.type(동물종류)의 값이 고양이라면 고양이를 체크한다.-->
+                  <%}else if(posts.type=="고양이"){%>
+                    <option value="개" >개</option>
+                    <option value="고양이" selected>고양이</option>
+                    <option value="그 외" >그 외</option>
+                  <!--posts.type(동물종류)의 값이 그 외라면 그 외를 체크한다.-->
+                  <%}else{%>
+                    <option value="개" >개</option>
+                    <option value="고양이" >고양이</option>
+                    <option value="그 외" selected>그 외</option>
+                  <%}%>
+                <!--posts값이 없다면 개를 체크한다.-->
+                <%}else{ %>
+                  <option value="개" selected>개</option>
+                  <option value="고양이" >고양이</option>
+                  <option value="그 외">그 외</option>
+                <% } %>                       
+              </select>
+            </div>    
+          </div>
+        <%}%>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">사진</label>
+          <div class="col-sm-10"> 
+            <input type="file" id="image" name="image" value="/images/save.jpg" />
+          </div>        
+        </div>
+        <div class="form-group row">      
+          <label class="col-sm-2 col-form-label">내용</label>
+          <div class="col-sm-10">
+            <!--posts값이 있다면 수정하기므로 value값에 누른 게시물 detail의 내용값을 넣는다.-->
+            <% if(posts){ %>
+              <textarea class="form-control" rows="5" name="contents" id="content"><%=posts.contents%></textarea>
+            <!--posts값이 없다면 value값이 없는 textarea생성-->      
+            <% }else{ %>
+              <textarea class="form-control" rows="5" name="contents" id="content" placeholder="내용을 입력해 주세요" ></textarea>       
+            <%}%>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div id="btn">
+            <!--posts값이 있다면 수정이므로 수정버튼 생성.-->
+            <% if(posts){ %>
+              <button type="submit" class="btn btn-success" id="btnSave">수정</button>
+            <!--posts값이 없다면 글쓰기이므로 저장버튼 생성-->       
+            <% }else{ %>
+              <button type="submit" class="btn btn-primary" id="btnSave">저장</button>         
+            <%}%>
+            <!--취소를 누르면 해당 카테고리 커뮤니티게시판 이동-->          
+            <button type="button" class="btn btn-outline-dark" id="btnList" onclick="javascript:location.href='/community?ctype=<%=ctype%>'">취소</button>
+          </div>     
+        </div>
+        <!--카테고리값 hidden input으로 저장-->
+        <input type="hidden" name="ctype" value="<%=ctype%>">                  
+      </form>
+    </div>
+    <!--footer-->
+    <div class="footer">
+        <% include ../footer.ejs %>
+    </div>   
+    <!--부트스트랩 js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

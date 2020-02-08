@@ -1,0 +1,158 @@
+<!--Code by 정지형-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>미로아펫</title>
+    <!--나눔 폰트 사용-->
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+    <!--부트스트랩 css-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!--community css-->
+    <link href="/stylesheets/community.css" rel="stylesheet">
+  </head>
+  <!--header 네비게이션 메뉴-->
+  <body class="body">
+    <div class="header">
+      <% include ../header.ejs %>
+    </div>
+    <!--main 높이 최소 800px-->
+    <div id = "main">
+      <div class="container" role="main" style="min-height:800px;">
+        <!--찾은 후기 카테고리를 눌렀다면 ctype 1-->
+        <% if(ctype==1){%>
+          <h4 class="font-weight-bold">찾은 후기</h4><br>
+        <!--분양 후기 카테고리를 눌렀다면 ctype 2-->
+        <%}else if(ctype==2){%>
+          <h4 class="font-weight-bold">분양 후기</h4><br>
+        <!--소통 / 잡담 카테고리를 눌렀다면 ctype 3-->
+        <%}else{%>
+          <h4 class="font-weight-bold">소통 / 잡담</h4><br>
+        <%}%>
+        <div>
+          <!--검색 폼-->
+          <form class="form-inline my-2 my-lg-0" method="get" action="/community/search">
+            <!--검색 카테고리-->
+            <select class="form-control mr-sm-2" name="searchType">
+              <!--searchType 1이면 제목을 선택한 것임. -->
+              <% if(searchType==1) {%>
+                <option value="1" selected>제목</option>
+                <option value="2">작성자</option>
+              <!--searchType 2 작성자를 선택한 것임. -->
+              <% }else{%>
+                <option value="1">제목</option>
+                <option value="2" selected>작성자</option>
+              <%}%>
+            </select>
+            <!--검색창-->
+            <input class="form-control mr-sm-2" type="text" name="searchStr" value="<%=searchStr%>"/>
+            <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="검색"/>
+            <!--검색 카테고리값 hidden input으로 저장-->
+            <input type="hidden" name="ctype" value="<%=ctype%>">
+          </form> 
+        </div>
+        <!--글쓰기 버튼 ctype값을 가지고 coummunity_write.ejs로 이동-->
+        <div id="write">
+          <a href="community/create?ctype=<%=ctype%>" class="btn btn-primary float-right">글쓰기</a>
+        </div>
+        <!--ctype이 3이라면 잡담/소통 커뮤니티 카테고리라서 동물 종류가 없음-->
+        <% if(ctype==3){%>
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">등록일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--post값이 있다면 for문을 이용해 테이블 형태로 출력-->
+              <% for(var i = 0; i < posts.length; i++){
+                var curTitle = posts[i].title;<!--제목-->
+                var curWriter = posts[i].writer['name'];<!--작성자 이름-->
+              %>
+                <!--communityId와 ctype값을 주소에 붙여 community_detail.ejs 페이지 이동-->           
+                <tr onclick="javascript:window.location='/community/detail?communityId=<%=posts[i]._id %>&ctype=<%=ctype%>'">
+                  <th scope="row"><%=totalCount-skipSize-i%></th><!--번호-->
+                  <td><%=curTitle%></td><!--제목-->
+                  <td><%=curWriter%></td><!--작성자 이름-->
+                  <td><%=moment(posts[i].created_at).format('YYYY-MM-DD')%></td><!--등록일 monent모듈을 사용해 'YYYY-MM-DD'로 날짜 형식 변환-->
+                </tr>
+              <%}%>
+            </tbody>
+          </table>
+        <!--ctype이 3이 아니라면 찾은 후기 or 분양후기이므로 동물 종류가 있음-->
+        <%}else{%>      
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">번호</th>
+                <th scope="col">종류</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">등록일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--post값이 있다면 for문을 이용해 테이블 형태로 출력-->
+              <% for(var i = 0; i < posts.length; i++){
+                  var curType = posts[i].type;<!--동물종류-->
+                  var curTitle = posts[i].title;<!--제목-->
+                  var curWriter = posts[i].writer['name'];<!--작성자 이름-->
+              %> 
+                <!--communityId와 ctype값을 주소에 붙여 community_detail.ejs 페이지 이동-->          
+                <tr onclick="javascript:window.location='/community/detail?communityId=<%=posts[i]._id %>&ctype=<%=ctype%>'">
+                  <th scope="row"><%=totalCount-skipSize-i%></th><!--번호-->
+                  <td><%=curType%></td><!--동물종류-->
+                  <td><%=curTitle%></td><!--제목-->
+                  <td><%=curWriter%></td><!--작성자 이름-->
+                  <td><%=moment(posts[i].created_at).format('YYYY-MM-DD')%></td><!--등록일 monent모듈을 사용해 'YYYY-MM-DD'로 날짜 형식 변환-->
+                </tr>
+              <%}%>
+            </tbody>
+          </table>
+        <%}%>
+        <div class="d-flex justify-content-center">
+          <ul class="pagination">
+            <% if(searchStr){%><!--검색한 값이 있다면 즉 검색한 페이지라면--> 
+              <% for(var i = 1; i<=pagination; i++){ %>
+                <%if(i==page){%><!--현재페이지일경우-->
+                  <li class="page-item active"><!--배경이 파랗게 하기위해 active클래스 적용 -->
+                    <!--해당커뮤니티의 검색된 결과값중 클릭한 숫자의 페이지로 이동하는 a태그-->
+                    <a class="page-link" href="/community/search?page=<%=i%>&searchStr=<%=searchStr%>&searchType=<%=searchType%>&ctype=<%=ctype%>" class="next-page"><%=i%></a>
+                  </li>
+                <%}else{%><!--현재페이지가 아닐경우-->
+                  <li class="page-item">
+                    <!--해당커뮤니티의 검색된 결과값중 클릭한 숫자의 페이지로 이동하는 a태그-->
+                    <a class="page-link" href="/community/search?page=<%=i%>&searchStr=<%=searchStr%>&searchType=<%=searchType%>&ctype=<%=ctype%>" class="next-page"><%=i%></a>
+                  </li>
+                <%}%>
+              <%}%>
+            <%}else{%><!--검색한 값이 없다면 즉 검색한 페이지가 아니라 전체글을 보는 커뮤니티 페이지라면--> 
+              <% for(var i = 1; i<=pagination; i++){ %>
+                <%if(i==page){%><!--현재페이지일경우-->
+                  <li class="page-item active"><!--배경이 파랗게 하기위해 active클래스 적용 -->
+                    <!--해당커뮤니티의 클릭한 숫자의 페이지로 이동하는 a태그-->
+                    <a class="page-link" href="/community?page=<%=i%>&ctype=<%=ctype%>" class="next-page"><%=i%></a>
+                  </li>
+                <%}else{%>
+                  <li class="page-item">
+                    <!--해당커뮤니티의 클릭한 숫자의 페이지로 이동하는 a태그-->
+                    <a class="page-link" href="/community?page=<%=i%>&ctype=<%=ctype%>" class="next-page"><%=i%></a>
+                  </li>
+                <%}%>
+              <%}%>
+            <%}%>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--footer-->
+    <div class="footer">
+      <% include ../footer.ejs %>
+    </div>
+    <!--부트스트랩 js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

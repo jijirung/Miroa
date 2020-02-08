@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>미로아 펫</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <script src="jQuery.MultiFile.min.js" type="text/javascript" language="javascript"> </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+        <div class="header">
+                <% include ../header.ejs %>
+        </div>
+        <div class="container">
+                <h4 class="font-weight-bold text-center">분양 정보</h4><br><br>
+        <%if(ano){%>
+            <form method="post" action="/miroapet/userlist/update" enctype="multipart/form-data">
+                <input type="hidden" value="<%=ano.ano%>" name="ano">
+        <%}else{%>
+            <form method="post" action="/miroapet/userlist/write"  enctype="multipart/form-data">
+        <%}%>
+        <div>
+            작성자 : <%=id%> 
+            연락처 : <%=phone%> (분양 신청자에게만 보여집니다.)
+        </div>
+         
+        <div>제목 : <input class="form-control" type= "text" name="title" value="<%if(ano){%><%=ano.title%><%}%>"></div>
+        <div>발견 장소 : <input class="form-control" type= "text" name="place" value="<%if(ano){%><%=ano.place%><%}%>"></div>
+        <div>동물종류 
+            <select class="form-control" name="kinds">
+                <option value="dog" <%if(ano&&ano.kinds=='dog'){%>selected<%}%>>개</option>
+                <option value="cat" <%if(ano&&ano.kinds=='cat'){%>selected<%}%>>고양이</option>
+                <option value="other" <%if(ano&&ano.kinds=='other'){%>selected<%}%>>그 외</option>
+            </select>
+        </div>
+        <div>성별
+                <select class="form-control" name="petgender" value="<%if(ano){%><%=ano.petgender%><%}%>">
+                        <option value="female" <%if(ano&&ano.petgender=='female'){%>selected<%}%>>암컷</option>
+                        <option value="male" <%if(ano&&ano.petgender=='male'){%>selected<%}%>>수컷</option>
+                        <option value="none" <%if(ano&&ano.petgender=='none'){%>selected<%}%>>모름</option>
+                </select>
+        </div>
+        <div>내용 : <textarea class="form-control" name="contents" ><%if(ano){%><%=ano.contents%><%}%></textarea></div>
+        <div>상태 : 
+                <select class="form-control" name="state" value="<%if(ano){%><%=ano.state%><%}%>">
+                        <option value="ing" <%if(ano&&ano.state=='ing'){%>selected<%}%>>분양중</option>
+                        <option value="end" <%if(ano&&ano.state=='end'){%>selected<%}%>>종료</option>
+                </select>          
+        </div>
+        <div class="thumnail_img">
+                <label>이미지 첨부(파일을 아무곳에나 드래그 해도 첨부됩니다.)</label><br />
+                <input type="file" name="imgfile" id="image" />
+            </div>
+            <div id="image_preview">
+                    <img src="#" width="300" hidden/>
+                    <br />
+                    <a href="#" hidden>지우기</a>
+                </div>
+        <div class="text-center">
+            <input class="btn btn-success" type= "submit" value="확인">
+            <input class="ui button btn btn-danger" type="button" value="취소" name="" onclick="javascript:history.back()" />
+        </div>
+
+    </form>
+    </div>
+    <div class="footer">
+            <% include ../footer.ejs %>
+        </div>
+    </body>
+    <script type="text/javascript">
+        //파일 업로드 이미지 미리보기
+        $('#image').on('change', function() {      
+            ext = $(this).val().split('.').pop().toLowerCase(); //확장자
+            //배열에 추출한 확장자가 존재하는지 체크
+            if($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+                resetFormElement($(this)); 
+                window.alert('이미지 파일이 아닙니다! (gif, png, jpg, jpeg 만 업로드 가능)');
+            } else {
+                file = $('#image').prop("files")[0];
+                blobURL = window.URL.createObjectURL(file);
+                $('#image_preview img').attr('src', blobURL);
+                $('#image_preview img').attr('hidden', false);
+                $('#image_preview a').attr('hidden', false);
+                $('#image_preview').slideDown(); 
+                $(this).slideUp(); 
+            }
+        });  
+        $('#image_preview a').bind('click', function() {
+            resetFormElement($('#image')); //전달한 양식 초기화
+            $('#image').slideDown(); 
+            $(this).parent().slideUp(); 
+            $('#image_preview img').attr('hidden', true);
+            $('#image_preview a').attr('hidden', true);
+            return false; //기본 이벤트 막음
+        });
+
+        function resetFormElement(e) {
+            e.wrap('<form>').closest('form').get(0).reset(); 
+            e.unwrap(); //감싼 <form> 태그를 제거
+        }
+         //드래그로 파일업로드
+        $(document).on("dragover drop", function(e) {
+        e.preventDefault();  // allow dropping and don't navigate to file on drop
+        }).on("drop", function(e) {
+         $("input[type='file']")
+        .prop("files", e.originalEvent.dataTransfer.files)  // put files into element
+        .closest("form") // autosubmit as well
+        file = $('#image').prop("files")[0];
+                blobURL = window.URL.createObjectURL(file);
+                $('#image_preview img').attr('src', blobURL);
+                $('#image_preview img').attr('hidden', false);
+                $('#image_preview a').attr('hidden', false);
+                $('#image_preview').slideDown(); 
+                $('#image').slideUp(); 
+        });
+        </script>
+                <!--부트스트랩 js-->
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+                <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+</html>

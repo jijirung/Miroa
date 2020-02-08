@@ -1,0 +1,106 @@
+<!--Code by 정지형-->
+
+<!--나눔 폰트 사용-->
+<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+<!--부트스트랩 css-->
+<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+<!--header css-->
+<link rel='stylesheet' href='/stylesheets/header.css' />
+<!--topHeader 로그인 정보-->
+<div class="container" id="topHeader">
+  <div id="logo">
+    <a href="/">
+      <img src="/images/mainlogo.png" alt="미로아PET" width="250px" >
+    </a>
+  </div>
+  <!--로그인 했을 경우(세션 정보)-->
+  <% if(session){%>
+    <div id="userInfo">
+      <%=session.user.name%> 님 &nbsp;  
+      <a class="text-dark" href="/leaflet/chat">채팅방 입장하기</a>
+      <a class="text-dark" id ="sign" href="/users/logout">로그아웃</a>     
+    </div>
+  <!--로그인 하지 않았을 경우-->
+  <%}else{%>
+    <div id="userInfo">
+      <a class="text-dark" href="/users/login">로그인</a>
+      <a class="text-dark" id ="sign" href="/users/join">회원가입</a>
+    </div>     
+  <%}%>
+</div>
+<!--bottomHeader 네비게이션 바-->
+<div id="bottomHeader">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(242, 147, 119);">
+    <a class="navbar-brand" id ="navlogo"href="/"><img src="/images/mainlogo.png" alt="미로아PET"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto mx-auto">            
+        <div id="navUserInfo">
+          <!--[폰화면일 경우 보이는 네비게이션 메뉴] 로그인 했을 경우(세션 정보)-->
+          <% if(session){%>
+            <li class="nav-item">
+              <b><%=session.user.name%></b>님 안녕하세요.&nbsp;&nbsp;
+              <a class="btn btn-light btn-sm" href="/leaflet/chat">채팅방 입장하기</a>
+              <a class="btn btn-dark btn-sm" href="/users/logout">로그아웃</a>
+            </li>
+          <!--[폰화면일 경우 보이는 네비게이션 메뉴] 로그인 하지 않았을 경우-->
+          <%}else{%>
+            <li class="nav-item">
+              '로그아웃' 상태입니다.<br><br>
+              <a class="btn btn-outline-secondary btn-sm" href="/users/login">로그인</a> 
+              <a class="btn btn-outline-secondary btn-sm" href="/users/login">회원가입</a>
+            </li>
+          <%}%>
+        </div>
+        <!--[네비게이션 메뉴] 소개-->
+        <li class="nav-item">
+          <a class="nav-link" href="/intro" style="color: white;">소개</a>
+        </li>
+        <!--[네비게이션 메뉴] 분양 정보 / 신청-->
+        <% if(header == 'miroapet'){%>
+          <li class="nav-item dropdown active">
+        <%} else{%>
+          <li class="nav-item dropdown">
+        <%}%>
+        <a style="color: white;" class="nav-link dropdown-toggle" href="/miroapet/userlist" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            분양 정보 / 신청
+        </a>
+        <!--[네비게이션 드롭바메뉴] 분양 정보 -->
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/miroapet/userlist">유저 분양 게시판</a>
+          <a class="dropdown-item" href="/miroapet/list">보호소 분양</a>
+        </div>
+        </li>
+        <!--[네비게이션 메뉴] 실종 신고 / 발견 제보-->
+        <li class="nav-item">
+          <a style="color: white;" class="nav-link" href="/leaflet/view">실종 신고 / 발견 제보</a>
+        </li>
+        <!--[네비게이션 메뉴] 커뮤니티-->
+        <% if(header == 'community'){%>
+          <li class="nav-item dropdown active">
+        <%} else{%>
+          <li class="nav-item dropdown">
+        <%}%>
+          <a style="color: white;" class="nav-link dropdown-toggle" href="/community" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            커뮤니티
+          </a>
+          <!--[네비게이션 드롭바메뉴] 커뮤니티-->
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/community?ctype=1">찾은 후기</a>
+            <a class="dropdown-item" href="/community?ctype=2">분양후기</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/community?ctype=3">소통 / 잡담</a>
+          </div>
+        </li>
+        <!--[네비게이션 메뉴] 마이페이지-->
+        <li class="nav-item">
+          <a style="color: white;" class="nav-link" href="/users/mypage">마이페이지</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+

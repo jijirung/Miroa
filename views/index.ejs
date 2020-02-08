@@ -1,0 +1,146 @@
+<!--Code by 정지형-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>미로아펫</title>
+    <!--나눔 폰트 사용-->
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800&display=swap&subset=korean" rel="stylesheet">
+    <!--부트스트랩 css-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!--배너 sectionstyle css-->
+    <link href="/stylesheets/sectionstyle.css" rel="stylesheet">
+  </head>
+  <body>
+    <!--header 네비게이션 메뉴-->
+    <div class="header">
+      <% include ./header.ejs %>
+    </div>
+    <!--main 높이 최소 800px-->
+    <main role="main" style="min-height:800px;">
+      <!--section 배너-->
+      <section>
+        <div class="wrapper">
+          <div class="banner">
+            <div class="bxslider">
+              <div class="wrapper_img">
+                <img src="images/indexbanner.jpg" loop=infinite />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--유저 분양 게시판 최신순 3개까지-->
+      <div class="album py-5">
+        <a style="text-decoration:none" href='/miroapet/userlist' ><h2 class="text-center font-weight-bold "><span class="badge badge-warning">유저 분양 게시판</span></h2></a><br>
+        <!--유저 분양 게시판에 올린 게시물이 없을 경우-->
+        <%if(deliver.length==0){%>
+          <div class="text-center">현재 게시물이 없습니다.</div>
+        <%}%>
+        <!--유저 분양 게시판에 올린 게시물이 있을 경우-->
+        <div class="container">
+          <div class="row">
+            <%for(i=0; i< deliver.length; i++){ %>
+                <div class="col-md-4">
+                  <div class="card mb-4 shadow-sm">
+                    <!--유저 분양 게시판에 올린 게시물 링크연결-->
+                    <a style="text-decoration:none" href=<%='/miroapet/userlist/read?ano=' + deliver[i].ano %>>
+                      <!--유저 분양 이미지-->
+                      <img class="bd-placeholder-img card-img-top" width="100%" height="400px" src='<%=deliver[i].img%>'/>
+                      <div class="card-body">
+                        <!--유저 분양 제목-->
+                        <h3 class="card-text text-dark text-center aa"><%=deliver[i].title%></h3>
+                        <!--유저 분양 작성자-->
+                        <p class="card-text text-dark text-center"><%=deliver[i].id%></p>
+                        <div class="text-right">
+                          <!--유저 분양 작성날짜-->
+                          <small class="text-muted "><%=moment(deliver[i].time).format('YYYY-MM-DD')%></small>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+            <%}%>             
+          </div>
+        </div>
+      </div>
+      <!--실종 신고 최신순 3개까지-->
+      <div class="album py-5">
+        <a style="text-decoration:none" href='/leaflet/view' ><h2 class="text-center text-dark font-weight-bold"><span class="badge badge-warning">실종 신고</span></h2></a><br>
+        <!--실종 신고 게시판에 올린 게시물이 없을 경우-->
+        <%if(lost.length==0){%>
+          <div class="text-center">현재 게시물이 없습니다.</div>
+        <%}%>
+        <!--실종 신고 게시판에 올린 게시물이 있을 경우-->
+        <div class="container">
+          <div class="row">
+            <%for(i=0; i< lost.length; i++){ %>
+              <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                  <!--실종 신고 게시판에 올린 게시물 링크연결-->
+                  <a style="text-decoration:none" href=<%='/leaflet/detail?_id=' + lost[i]._id %>>
+                    <!--실종 신고 이미지-->
+                    <img class="bd-placeholder-img card-img-top" width="100%" height="400px" src='<%=lost[i].img%>'/>
+                    <div class="card-body">
+                      <!--실종 신고 제목-->
+                      <h3 class="card-text text-dark text-center aa"><%=lost[i].title%></h3>
+                      <!--실종 신고 작성자-->
+                      <p class="card-text text-dark text-center"><%=lost[i].id%></p>
+                      <div class="text-right">
+                        <!--실종 신고 작성날짜-->
+                        <small class="text-muted "><%=moment(lost[i].created_at).format('YYYY-MM-DD')%></small>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            <%}%>      
+          </div>
+        </div>
+      </div>
+      <!--발견 제보 최신순 3개까지-->
+      <div class="album py-5">
+          <a style="text-decoration:none" href='/leaflet/view' ><h2 class="text-center text-dark font-weight-bold"><span class="badge badge-warning">발견 제보</span></h2></a><br>
+          <!--발견 제보 게시판에 올린 게시물이 없을 경우-->
+          <%if(find.length==0){%>
+            <div class="text-center">현재 게시물이 없습니다.</div>
+          <%}%>
+          <!--발견 제보 게시판에 올린 게시물이 있을 경우-->
+          <div class="container">
+            <div class="row">
+              <%for(i=0; i< find.length; i++){ %>
+                <div class="col-md-4">
+                  <div class="card mb-4 shadow-sm">
+                    <!--발견 제보 게시판에 올린 게시물 링크연결-->
+                    <a style="text-decoration:none" href=<%='/leaflet/detail?_id=' + find[i]._id %>>
+                      <!--발견 제보 이미지-->
+                      <img class="bd-placeholder-img card-img-top" width="100%" height="400px" src='<%=find[i].img%>'/>
+                      <div class="card-body">
+                        <!--발견 제보 제목-->
+                        <h3 class="card-text text-dark text-center aa"><%=find[i].title%></h3>
+                        <!--발견 제보 작성자-->
+                        <p class="card-text text-dark text-center"><%=find[i].id%></p>
+                        <div class="text-right">
+                          <!--발견 제보 작성날짜-->
+                          <small class="text-muted "><%=moment(find[i].created_at).format('YYYY-MM-DD')%></small>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              <%}%>      
+            </div>
+          </div>
+        </div>
+    </main>
+    <!--footer-->
+    <div class="footer">
+      <% include ./footer.ejs %>
+    </div>
+    <!--부트스트랩 js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.js"></script>
+  </body>
+</html>
+
+  
+   

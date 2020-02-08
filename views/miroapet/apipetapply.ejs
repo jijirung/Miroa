@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>분양 신청</title>
+    <!--부트스트랩 css-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+        <!-- api 보호소 유기동물 리스트 분양 신청 폼 -->
+        <form action="/miroapet/list/apply" method="post" onsubmit="return checks()">
+            <div class="container">
+        <% if(session.user&&apiitem) {%>
+            <div class="list_box">
+                    <label><mark><%=session.user.id%></mark>의 신청</label>
+            </div>
+            <div class="form-group">
+            신청인 성명 : <%=session.user.name%><br>
+            성별 : <input type="radio" name="s" value="1">남 <input type="radio" name="s" value="2">녀<br>
+            연령 : <input class="form-control" type="text" name="age"><br>
+            전화번호 : <%=session.user.phone%><br>
+            이메일 : <input class="form-control" type="email" name="email"><br>
+            통화가능시간 : <input class="form-control" type="text" name="time"><br>
+            지역 : <input class="form-control" type="text" name="loc"><br>
+            결혼여부 : <input type="radio" name="m" value="1">미혼 <input type="radio" name="m" value="2">기혼<br>
+            신청인직업<br>
+            1.예전에 반려동물을 키우신 적이 있으신가요?<br> <input type="radio" name="q1" value="1">예 <input type="radio" name="q1" value="2">아니오<br>
+            (만일 있으시다면 어떤 종류의 동물인지, 얼마나 오래 키우셨는지, 지금은 어떻게 되었는지 적어주세요.)<br>
+            <textarea class="form-control" name="q102"></textarea><br>
+            2. 현재 집에서 다른 동물을 키우고 계십니까?<br>(만일 있으시다면 다음 사항에 체크해 주세요.) <br><input type="radio" name="q2" value="1">예 <input type="radio" name="q2" value="2">아니오<br>
+            
+            3. 귀하의 가족은 모두 몇 명인가요?<br><input type="text" name="fam"><br>
+            4. 거주하고 계신 주택 형태에 표시해 주세요.<br>
+            <input type="radio" name="q4" value="1">아파트 <input type="radio" name="q4" value="2">단독주택 <input type="radio" name="q4" value="3">빌라/다세대 <input type="radio" name="q4" value="4">원룸 <input type="radio" name="q4" value="5">기타<br> 
+            5. 가족들은 입양에 대해서 모두 찬성하시나요? <br>
+            <input type="radio" name="q5" value="1">모두 찬성 <input type="radio" name="q5" value="2">부분 찬성 <input type="radio" name="q5" value="3">본인제외 <input type="radio" name="q5" value="4">모두반대<br>
+            6. 입양을 원하시는 이유는 무엇인가요?<br>
+            <textarea class="form-control" name="q6"></textarea><br>
+            7. 만약 댁에서 새로운 아기가 출생할 경우 입양된 동물을 계속 키우실 수 있겠습니까?<br>
+            <textarea class="form-control" name="q7"></textarea><br>
+            8. 아래 사항에 대해 대략 어느 정도의 비용이 들어갈지 예상되는 비용을 기입해주세요.<br>
+            * 1년 동안의 예방접종비용 : <input class="form-control" type="text" name="q81" placeholder="만원"><br>
+            * 1개월 동안의 사료 및 양육비용 : <input class="form-control" type="text" name="q82" placeholder="만원"><br>
+            9. 불임 수술에 대한 귀하의 의견은 어떠신지요?<br>
+            <textarea class="form-control" name="q9"></textarea><br>
+            10. 반려동물의 수명은 15년이상 됩니다. 10년이상 키울 수 있으십니까? 만약의 경우 입양 동물을 키우다가 더이상 양육할 여건이 되지 못할 시,
+            제3자에게 양도하지 않고 본 단체로 돌려보내 주실 것에 동의하십니까? (반드시 동의하셔야 합니다.)<br>
+            <textarea class="form-control" name="q10"></textarea><br>
+            11. 반려동물을 입양하시려면, 입양비(유기견의 구조와 치료, 구제비로 사용됩니다)를 납부하셔야 하며
+             불임 수술 시행에도 동의하셔야 합니다. 동의하십니까?<br>
+             <textarea class="form-control" name="q11"></textarea><br>
+            12. 그 외에 입양 신청에 관해 덧붙이고자 하시는 말씀이 있으시면 적어주시기 바랍니다.<br>
+            <textarea class="form-control" name="q12"></textarea><br>   
+            <input name="careNm" value="<%=apiitem.careNm%>" hidden>보호소 이름 : <%=apiitem.careNm%><br>
+            <input name="careTel" value="<%=apiitem.careTel%>" hidden>보호소 연락처 : <%=apiitem.careTel%><br>
+            <input name="careAddr" value="<%=apiitem.careAddr%>" hidden>보호장소 : <%=apiitem.careAddr%><br>
+            <input name="chargeNm" value="<%=apiitem.chargeNm%>" hidden>담당자 : <%=apiitem.chargeNm%><br>
+            <input name="officetel" value="<%=apiitem.officetel%>" hidden>담당자 연락처 : <%=apiitem.officetel%><br>
+        </div>
+
+    <input type="checkbox" id="check" name="agree">회원 정보를 보호소에 정보 제공하는 것에 동의하시겠습니까?<br>  
+
+    <div class="text-center"><input type="submit" class="btn btn-success" name="apply" value="신청하기" id="btn" disabled></div>
+    </div>
+    </form>
+    <%}%>
+    <script type="text/javascript">
+        $("#check").change(function () {
+            if ($("#check").is(":checked")) {
+                alert("정보 제공에 동의하셨습니다.");
+                $("#btn").attr("disabled", !this.checked);
+            } else {
+                $("#btn").attr("disabled", !this.checked);
+            }
+        });
+        function checks() {
+
+        }
+    </script>
+    <!--부트스트랩 js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

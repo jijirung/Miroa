@@ -1,0 +1,48 @@
+section {
+  width:100vw;
+  position:static;
+  margin-bottom: 40px;
+
+}
+.section-title {
+  margin:30px auto 50px auto;
+}
+.section-title h3{
+  font-size:1.8em;
+  text-align: center;
+
+}
+.wrapper {
+  margin-top: -80px;
+  padding-bottom:40px;
+  background:transparent;
+}
+
+.wrapper_img{
+    width:100%;
+    max-height: 700px;
+    overflow: hidden;
+}
+.wrapper_img img{
+    display: block;
+    width: 100%;
+}
+
+@media screen and (min-width:100px){
+    .wrapper{
+        max-width:100%;
+    }
+    .wrapper_img{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+}
+.banner {
+  max-width:100%;
+  margin:0 auto;
+}
+.aa{
+  font-size: 1vw;
+}
+/*여기까지 배너*/
